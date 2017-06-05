@@ -16,8 +16,6 @@ Amazon's *API Gateway* provides a relatively simple way to put an HTTP endpoint 
   * http://example.com/{category}/huffy
   * http://example.com/{category}/cannondale
   * http://example.com/{category}/radioflyer
-<br>
-<br>
 * <strong>Everything</strong> as a path variable: Configuring your resource as a proxy resource or {proxy+} is a greedy path wherein the entire subresource chain is passed to your backend as path variables.
 http://example.com/{proxy+} captures all of these subresources as path variables:
     * http://example.com/bikes/huffy/super-fast
