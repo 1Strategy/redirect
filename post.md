@@ -52,6 +52,7 @@ Then create the appropriate ANY method:
 The primary difference between using a proxy resource and the other two resource types is that the you are response for the entire *integration response* (proper headers/status codes/body). As such, your backend resource must return a properly formed response to the HTTP request (see API Gateway section below).
 To a demonstrate how to use the proxy+ resource, I came up with a fun example of how to use it. I also wanted the ability to create a custom token so I could obfuscate long s3 urls, other random domains, but also have a name that made sense. Think a serverless bit.ly clone (e.g. redirects tokens to a URL bit.ly/neat)
 The serverless URL redirect tool consists of the below services:
+<br>
 ![](images/diagram.png)
 
 ######  API Gateway
