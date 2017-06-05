@@ -95,7 +95,8 @@ When using a {proxy+} resource, API Gateway expects a specific return payload (s
           ...
         },
         "body": "<html>...</html>"
-    }```
+    }
+```
 
 #####    Lambda
 
