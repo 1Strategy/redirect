@@ -47,7 +47,7 @@ Then create the appropriate ANY method:
 * Select **Lambda Function**
 * Press **Save**
 
-<img src='images/anymethod.png' width=500>
+<img src='images/anymethod.png' width=500><br>
 
 The primary difference between using a proxy resource and the other two resource types is that the you are response for the entire *integration response* (proper headers/status codes/body). As such, your backend resource must return a properly formed response to the HTTP request (see API Gateway section below).
 To a demonstrate how to use the proxy+ resource, I came up with a fun example of how to use it. I also wanted the ability to create a custom token so I could obfuscate long s3 urls, other random domains, but also have a name that made sense. Think a serverless bit.ly clone (e.g. redirects tokens to a URL bit.ly/neat)
@@ -106,6 +106,7 @@ You can view the code here: https://github.com/1Strategy/redirect/blob/master/re
 >**Note**: Although a simple use case, what I've written is actually more of a monolithic app or function. This makes it very easy to break the API and harder to test. From an architecture standpoint it usually makes more sense to have a different function service each `http method`.
 
 <br>
+
 ##### DynamoDB
 For this example, I use a simple DynamoDB table with two fields: <br>
 * `id` is a quasi-unique 6 token, which is used as part of the shortened URL https://.../redirect/ABC123.
