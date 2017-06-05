@@ -1,0 +1,42 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: This is a url redirection tool for your domain (bit.ly clone)
+Resources:
+  UrlRedirectLambda:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: redirect.lambda_handler
+      Runtime: python2.7
+      CodeUri: .
+      Description: ''
+      MemorySize: 128
+      Timeout: 3
+      Policies:
+        - AmazonDynamoDBFullAccess
+      Environment:
+        Variables:
+          dynamodb_table: !Ref redirectDynamoDB
+      Events:
+        Api1:
+          Type: Api
+          Properties:
+            Path: /redirect/{proxy+}
+            Method: ANY
+        Api2:
+          Type: Api
+          Properties:
+            Path: /redirect
+            Method: ANY
+  redirectDynamoDB:
+    Type: AWS::Serverless::SimpleTable
+    PrimaryKey:
+      Name: id
+      Type: String
+    ProvisionedThroughput:
+      ReadCapacityUnits: 5
+      WriteCapacityUnits: 5
+Outputs:
+  APIEndPoint:
+    Description: This is the invocation endpoint for this API
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/${ServerlessRestApiProdStage}/redirect"
+      #!Join ["/", !Join [ ".", [ !Ref ServerlessRestApi, "us-west-2.execute-api.awazonaws.com"] ], !Ref ServerlessRestApiProdStage, ""]
