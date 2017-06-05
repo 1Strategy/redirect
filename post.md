@@ -31,6 +31,7 @@ Once the resource is defined you then must create HTTP  methods, if you're unfam
 Another cool *API Gateway* feature is the **ANY** method which allows for a single method definition that allows to you handle all http methods. E.g. `GET`, `POST`, `PUT`, `DELETE`, etc. are all sent to the same backend resources.
 Between {proxy+} and the ANY method you can define a single resource that can handle all of your api requests. This is very useful if you want your backend resource to handle all of the decision making, but you want to make use of *API Gateway*'s features (scaling, throttling, authorization, request validation, https).
 To use the greedy proxy+ path:
+
 * Navigate to your API here: https://us-west-2.console.aws.amazon.com/apigateway/home?region=us-west-2#/apis
 * Press **Actions**
 * Press **Create Resource**
@@ -84,6 +85,7 @@ The serverless URL redirect tool consists of the below services:
 ```
 
 When using a {proxy+} resource, API Gateway expects a specific return payload (seen below). If anything else is returned, API gateway will return a 500 error and the logs will show a malformed lambda response. Your code will need to formulate the proper status and headers based on what you're trying to accomplish. In this case, the function returns a `statusCode` of `200` or `301` depending on whether or not a given token exists.
+
 ```JSON
     {
         "statusCode": 200 |301|4XX|5XX,
@@ -92,7 +94,8 @@ When using a {proxy+} resource, API Gateway expects a specific return payload (s
           ...
         },
         "body": "<html>...</html>"
-    }```
+    }
+```
 
 #####    Lambda
 In this example use case, I've used lambda to serve as both the front and back end of my redirect microservice.
