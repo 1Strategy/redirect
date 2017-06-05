@@ -35,13 +35,23 @@ To use the greedy proxy+ path:
 * Press **Actions**
 * Press **Create Resource**
 * Select **Configure as proxy resource**
- ![](proxysetup.png)
+ ![](images/proxysetup.png)
 * Press **Create Resource**
+
+Then create the appropriate ANY method:
+* Press **Actions**
+* Press **Create Method**
+* Select **Use Lambda Proxy integration**
+* Select **Region**
+* Select **Lambda Function**
+* Press **Save**
+
+<img src='images/anymethod.png' width=500>
 
 The primary difference between using a proxy resource and the other two resource types is that the you are response for the entire *integration response* (proper headers/status codes/body). As such, your backend resource must return a properly formed response to the HTTP request (see API Gateway section below).
 To a demonstrate how to use the proxy+ resource, I came up with a fun example of how to use it. I also wanted the ability to create a custom token so I could obfuscate long s3 urls, other random domains, but also have a name that made sense. Think a serverless bit.ly clone (e.g. redirects tokens to a URL bit.ly/neat)
 The serverless URL redirect tool consists of the below services:
-![](diagram.png)
+![](images/diagram.png)
 
 ######  API Gateway
 * API gateway serves the website
@@ -107,9 +117,9 @@ API Gateway proxy+ is a powerful tool to that can greatly simply your front end 
 ##### SAM Template
 There is currently a bug with SAM for proxy resources where it doesn't properly provision API gateway permissions to your lambda function. To fix this, follow the steps below:
 * Press on the pencil icon next to the lambda function:
-<img src = 'permission1.png' width = 500><br/>
+<img src = 'images/permission1.png' width = 500><br/>
 * Press the checkbox to the right of the lambda function
-<img src = 'permission2.png' width = 500><br/>
+<img src = 'images/permission2.png' width = 500><br/>
 * A pop-up will prompt you to give API gateway invocation permissions on your lambda function. Press OK.<br>
-<img src = 'permission3.png' width = 500><br/>
+<img src = 'images/permission3.png' width = 500><br/>
 The endpoint will now work correctly.
