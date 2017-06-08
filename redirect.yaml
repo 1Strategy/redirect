@@ -39,4 +39,4 @@ Outputs:
   APIEndPoint:
     Description: This is the invocation endpoint for this API
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/${ServerlessRestApiProdStage}/redirect"
-      #!Join ["/", !Join [ ".", [ !Ref ServerlessRestApi, "us-west-2.execute-api.awazonaws.com"] ], !Ref ServerlessRestApiProdStage, ""]
+     
