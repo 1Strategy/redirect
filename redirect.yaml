@@ -7,7 +7,7 @@ Resources:
     Properties:
       Handler: redirect.lambda_handler
       Runtime: python2.7
-      CodeUri: .
+      CodeUri: s3://1s-blog/c7de37cf55fbb4784e1ae6fbbc399acd
       Description: ''
       MemorySize: 128
       Timeout: 3
