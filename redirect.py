@@ -68,11 +68,11 @@ def create_new_url(event, domain):
         return return_payload
 
     # Put the token and url into DynamoDB
-    dynamodb.put_item(TableName=os.environ['dynamodb_table'],
-                      Item={'id': {'S': "{}".format(token)},
-                            'destination_url': {
-                            'S': url}})
-
+    response = dynamodb.put_item(TableName=os.environ['dynamodb_table'],
+                                Item={'id': {'S': "{}".format(token)},
+                                       'destination_url':{'S':url}
+                                })
+    print(response)
     # if the consumer requested a JSON payload in return,
     # return json, otherwise just return a string
     if 'application/json' in event['headers']['Accept']:
@@ -83,8 +83,8 @@ def create_new_url(event, domain):
         })
     else:
         return_payload['body'] = \
-            "Shortened URL for {url} created. \n".format(url=url) + \
-            "The shortened url is {domain}/{token}\n".format(domain=domain,
+            "Shortened URL for {url} created. <br>".format(url=url) + \
+            "The shortened url is <a href=\"{domain}/{token}\">{domain}/{token}</a><br>".format(domain=domain,
                                                              token=token)
     return return_payload
 
@@ -153,57 +153,72 @@ def get_domain(event):
 
 def api_website(event, domain):
     # returns a website front end for the redirect tool
-    body = """<html>
-            <body bgcolor=\"#E6E6FA\">
-            <head>
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-            <script>
+    body = """
+    <html>
+    <body bgcolor=\"#E6E6FA\">
+    <head>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <style>
+    .form {
+        padding-left: 1cm;
+    }
 
-            $(document).ready(function(){
-                $("button").click(function(){
-                  var destinationUrl = document.getElementById("destinationUrl").value;
-                  var dict = {};
-                  dict["destination_url"] = destinationUrl;
-                  if (document.getElementById("customToken").value != "") {
-                      dict["custom_token"] = document.getElementById("customToken").value;
-                  }
+    .div{
+      padding-left: 1cm;
+    }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script>
 
-                  $.ajax({
-                    type: 'POST',
-                    headers: {
-                        'Content-Type':'application/json',
-                        'Accept':'text/html'
-                    },
-                    url:'"""
+    $(document).ready(function(){
+        $("button").click(function(){
+          var destinationUrl = document.getElementById("destinationUrl").value;
+          var dict = {};
+          dict["destination_url"] = destinationUrl;
+          if (document.getElementById("customToken").value != "") {
+              dict["custom_token"] = document.getElementById("customToken").value;
+          }
 
-    body += domain
-    body +=         """',
-                    crossDomain: true,
-                    data: JSON.stringify(dict),
-                    dataType: 'text',
-                    success: function(responseData) {
-                        document.getElementById("id").innerHTML = responseData;
-                    },
-                    error: function (responseData) {
-                        alert('POST failed.'+ JSON.stringify(responseData));
-                    }
-                  });
-                });
-            });
-            </script>
-            </head>
-            <body>"""
-    body += event['resource'][1:]
-    body += """<form class="form" action="" method="post">
-                    <textarea rows="1" cols="50" name="text" id="destinationUrl" placeholder="Enter URL (http://www.example.com)"></textarea>
-              </form>
-              <form class="form" action="" method="post">
-                    <textarea rows="1" cols="50" name="text" id="customToken" placeholder="Use Custom Token (domain.com/redirect/custom_token)"></textarea>
-              </form>
-            <button>Shorten URL</button>
-            <div id='id'></div>
-            </body>
-            </html>"""
+          $.ajax({
+            type: 'POST',
+            headers: {
+                'Content-Type':'application/json',
+                'Accept':'text/html'
+            },
+            url:'$domain',
+            crossDomain: true,
+            data: JSON.stringify(dict),
+            dataType: 'text',
+            success: function(responseData) {
+                document.getElementById("id").innerHTML = responseData;
+            },
+            error: function (responseData) {
+                alert('POST failed.'+ JSON.stringify(responseData));
+            }
+          });
+        });
+    });
+    </script>
+    </head>
+    <title>Serverless URL Redirect</title>
+    <h1 class="div">Serverless URL Redirect</h1>
+    <body>
+
+      <form class="form" action="" method="post">
+            <textarea rows="1" cols="50" name="text" id="destinationUrl" placeholder="Enter URL (http://www.example.com)"></textarea>
+      </form>
+      <form class="form" action="" method="post">
+            <textarea rows="1" cols="50" name="text" id="customToken" placeholder="Use Custom Token (domain.com/redirect/custom_token)"></textarea>
+      </form>
+
+
+    <div class="div"><button class="btn btn-primary">Shorten URL</button></div>
+    <div class="div" id='id'></div>
+    </body>
+    </html>
+    """
 
     return {
                 "statusCode": 200,
@@ -211,5 +226,5 @@ def api_website(event, domain):
                     "Content-Type": 'text/html',
                     "Access-Control-Allow-Origin": "*"
                 },
-                "body": body
+                "body": string.Template(body).safe_substitute({"domain": domain})
     }
