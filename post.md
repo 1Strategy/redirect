@@ -109,7 +109,7 @@ You can view the code here: https://github.com/1Strategy/redirect/blob/master/re
 
 ##### DynamoDB
 For this example, I use a simple DynamoDB table with two fields: <br>
-* `id` is a quasi-unique 6 token, which is used as part of the shortened URL https://.../redirect/ABC123.
+* `id` is a quasi-unique 6 token, which is used as part of the shortened URL https://redirect.example.com/ABC123.
 * `destination_url` contains the redirect URL.
 
 ### Conclusion
