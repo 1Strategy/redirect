@@ -118,12 +118,4 @@ API Gateway proxy+ is a powerful tool to that can greatly simply your front end 
 
 ##### Deploy it for your own use
 [Cloudformation Template](https://github.com/1Strategy/redirect/redirect.yaml)
-##### SAM Template
-There is currently a bug with SAM for proxy resources where it doesn't properly provision API gateway permissions to your lambda function. To fix this, follow the steps below:
-* Press on the pencil icon next to the lambda function:
-<img src = 'images/permission1.png' width = 500><br/>
-* Press the checkbox to the right of the lambda function
-<img src = 'images/permission2.png' width = 500><br/>
-* A pop-up will prompt you to give API gateway invocation permissions on your lambda function. Press OK.<br>
-<img src = 'images/permission3.png' width = 500><br/>
-The endpoint will now work correctly.
+
